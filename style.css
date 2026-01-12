@@ -1,1 +1,18 @@
-/* Add styles here */
+:root {
+    --background-color: #f0f0f0;
+    --text-color: #333;
+    --primary-color: #4CAF50;
+    --white: #fff;
+    --lotto-ball-color: #FFC107;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
