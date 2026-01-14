@@ -1,4 +1,4 @@
-class LottoGenerator extends HTMLElement {
+class DinnerRoulette extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -6,12 +6,13 @@ class LottoGenerator extends HTMLElement {
         const template = document.createElement('template');
         template.innerHTML = `
             <style>
-                .lotto-card {
+                .dinner-card {
                     background: var(--white);
                     padding: 2rem;
                     border-radius: 1rem;
                     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
                     text-align: center;
+                    width: 300px;
                 }
 
                 h1 {
@@ -19,24 +20,14 @@ class LottoGenerator extends HTMLElement {
                     margin-bottom: 1.5rem;
                 }
 
-                #lotto-numbers {
-                    display: flex;
-                    justify-content: center;
-                    gap: 0.5rem;
-                    margin-bottom: 1.5rem;
-                }
-
-                .lotto-ball {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    background-color: var(--lotto-ball-color);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                #dinner-result {
                     font-size: 1.5rem;
                     font-weight: bold;
                     color: var(--text-color);
+                    height: 50px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
 
                 button {
@@ -48,42 +39,48 @@ class LottoGenerator extends HTMLElement {
                     border-radius: 0.5rem;
                     cursor: pointer;
                     transition: background-color 0.3s ease;
+                    margin-top: 1.5rem;
                 }
 
                 button:hover {
                     background-color: #45a049;
                 }
             </style>
-            <div class="lotto-card">
-                <h1>로또 번호 추첨기</h1>
-                <div id="lotto-numbers"></div>
-                <button id="generate-btn">번호 추첨</button>
+            <div class="dinner-card">
+                <h1>오늘 저녁 뭐 먹지?</h1>
+                <div id="dinner-result"></div>
+                <button id="generate-btn">메뉴 추천</button>
             </div>
         `;
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        this.shadowRoot.getElementById('generate-btn').addEventListener('click', () => this.generateNumbers());
+        this.shadowRoot.getElementById('generate-btn').addEventListener('click', () => this.generateDinner());
     }
 
-    generateNumbers() {
-        const lottoNumbers = new Set();
-        while(lottoNumbers.size < 6) {
-            lottoNumbers.add(Math.floor(Math.random() * 45) + 1);
-        }
+    generateDinner() {
+        const dinnerOptions = [
+            '치킨', '피자', '삼겹살', '떡볶이', '짜장면', 
+            '짬뽕', '김치찌개', '된장찌개', '부대찌개', '초밥', 
+            '파스타', '햄버거', '국밥', '냉면', '갈비'
+        ];
+        const resultContainer = this.shadowRoot.getElementById('dinner-result');
+        resultContainer.textContent = '';
 
-        const numbersContainer = this.shadowRoot.getElementById('lotto-numbers');
-        numbersContainer.innerHTML = '';
-        Array.from(lottoNumbers).sort((a,b) => a-b).forEach(number => {
-            const ball = document.createElement('div');
-            ball.classList.add('lotto-ball');
-            ball.textContent = number;
-            numbersContainer.appendChild(ball);
-        });
+        let count = 0;
+        const interval = setInterval(() => {
+            resultContainer.textContent = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
+            count++;
+            if (count > 20) {
+                clearInterval(interval);
+                const selectedDinner = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
+                resultContainer.textContent = selectedDinner;
+            }
+        }, 100);
     }
 }
 
-customElements.define('lotto-generator', LottoGenerator);
+customElements.define('dinner-roulette', DinnerRoulette);
 
 document.getElementById('theme-toggle').addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
