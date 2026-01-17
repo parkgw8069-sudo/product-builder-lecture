@@ -69,19 +69,55 @@ class DinnerRoulette extends HTMLElement {
 
         let count = 0;
         const interval = setInterval(() => {
-            resultContainer.textContent = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
+            const option1 = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
+            let option2 = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
+            while (option1 === option2) { // Ensure distinct options during animation
+                option2 = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
+            }
+            resultContainer.textContent = `${option1}, ${option2}`;
             count++;
             if (count > 20) {
                 clearInterval(interval);
-                const selectedDinner = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
-                resultContainer.textContent = selectedDinner;
+                const selected = new Set();
+                while (selected.size < 2) {
+                    selected.add(dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)]);
+                }
+                const [finalOption1, finalOption2] = Array.from(selected);
+                resultContainer.textContent = `${finalOption1}, ${finalOption2}`;
             }
         }, 100);
     }
 }
 
+
 customElements.define('dinner-roulette', DinnerRoulette);
 
-document.getElementById('theme-toggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+const themes = ['light', 'dark', 'red'];
+
+// Function to apply theme
+function applyTheme(theme) {
+    body.classList.remove('theme-dark', 'theme-red'); // Remove existing theme classes
+    if (theme === 'dark') {
+        body.classList.add('theme-dark');
+    } else if (theme === 'red') {
+        body.classList.add('theme-red');
+    }
+    localStorage.setItem('theme', theme);
+}
+
+// Load theme from localStorage
+let currentTheme = localStorage.getItem('theme');
+if (!currentTheme || !themes.includes(currentTheme)) {
+    currentTheme = 'light'; // Default to light if no theme or invalid theme
+}
+applyTheme(currentTheme);
+
+
+themeToggle.addEventListener('click', () => {
+    let currentThemeIndex = themes.indexOf(localStorage.getItem('theme') || 'light');
+    const nextThemeIndex = (currentThemeIndex + 1) % themes.length;
+    const nextTheme = themes[nextThemeIndex];
+    applyTheme(nextTheme);
 });

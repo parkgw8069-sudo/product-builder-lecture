@@ -1,9 +1,3 @@
-:root {
-    --white: #ffffff;
-    --primary-color: #4CAF50;
-    --text-color: #333333;
-}
-
 body {
     font-family: sans-serif;
     display: flex;
@@ -11,15 +5,28 @@ body {
     align-items: center;
     min-height: 100vh;
     transition: background-color 0.5s, color 0.5s;
+    /* Default (Light) Theme */
     background-color: #f4f4f4;
-    color: var(--text-color);
+    color: #333333;
+    --white: #ffffff;
+    --primary-color: #4CAF50;
+    --text-color: #333333;
 }
 
-body.dark-mode {
+body.theme-dark {
+    background-color: #333333;
+    color: #ffffff;
     --white: #444444;
     --primary-color: #66bb6a;
     --text-color: #ffffff;
-    background-color: #333333;
+}
+
+body.theme-red {
+    background-color: #ffcccc; /* Light red background */
+    color: #cc0000; /* Dark red text */
+    --white: #ffffff;
+    --primary-color: #cc0000; /* Red primary color */
+    --text-color: #cc0000;
 }
 
 dinner-roulette {
@@ -30,6 +37,41 @@ dinner-roulette {
     position: absolute;
     top: 20px;
     right: 20px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+#contact-form {
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 0.5rem;
+}
+
+#contact-form h2 {
+    text-align: center;
+    color: var(--primary-color);
+}
+
+#contact-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+#contact-form input,
+#contact-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+}
+
+#contact-form button {
     background-color: var(--primary-color);
     color: var(--white);
     border: none;
